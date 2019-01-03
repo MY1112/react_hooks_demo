@@ -1,17 +1,33 @@
 .demo-hook {
-	position: relative;
+	position: absolute;
     height: 200px;
-    width: 800px;
-    margin: auto;
-	margin-top: 200px;
+	width: 800px;
+	top: 100px;
+	left: 50%;
+	transform: translateX(-50%);
 	box-shadow: 0px 1px 13px 0px #DDD;
 	border-radius: 8px;
 	padding: 10px;
 	transition: all 0.2s ease;
 }
 .demo-hook:hover {
-	position: relative;
-	margin-top: 196px;
+	top: 96px;
+	box-shadow: 0px 6px 13px 3px #DDD;
+}
+.demo-hook-2 {
+	position: absolute;
+    height: 200px;
+	width: 800px;
+	top: 400px;
+	left: 50%;
+	transform: translateX(-50%);
+	box-shadow: 0px 1px 13px 0px #DDD;
+	border-radius: 8px;
+	padding: 10px;
+	transition: all 0.2s ease;
+}
+.demo-hook-2:hover {
+	top: 396px;
 	box-shadow: 0px 6px 13px 3px #DDD;
 }
 .photo, img {
