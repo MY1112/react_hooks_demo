@@ -1,4 +1,4 @@
-import React, { Component, useState, useEffect } from 'react';
+import React, { Component, useState, useEffect, useLayoutEffect, useRef } from 'react';
 import { TransitionGroup } from 'react-transition-group';
 import GSAP from 'react-gsap-enhancer'
 import { TimelineMax, Sine } from 'gsap';
@@ -65,13 +65,77 @@ function useWindowSize() {
   
     useEffect(() => {
         window.addEventListener("resize", handleResize);
+        console.log('-----------外面')
         return () => {
+            console.log('-----------里面')
             window.removeEventListener("resize", handleResize);
         };
     }, []);
   
     return windowSize;
 }
+
+
+function Example() {
+    const [count, setCount] = useState(0);
+    const [text, setText] = useState('');
+    let a = useRef("xxx")
+    useEffect(() => {
+      console.log(a, 'useEffect')
+       document.title = `跳了 ${count} 次`;
+       return () =>{
+        console.log(a, 'useEffect结束')
+        document.title = `remove`;
+       }
+     });
+     useLayoutEffect(() => {
+      console.log(a, 'useLayoutEffect')
+       document.title = `又跳了 ${count} 次`;
+       return () =>{
+        console.log(a, 'useLayoutEffect结束')
+        document.title += '!!!';
+       }
+     });
+    console.log(count, '更新Example')
+    return (
+      <quoteblock>
+        <p>跳了 {count} 次</p>
+        <button onClick={() => setCount(count + 1)}>
+          jump Egg
+        </button>
+        <input ref={a} value={text} onChange={function(e){
+          setText(e.target.value)
+        }} />
+        <span>共{text.length}个字符</span>
+      </quoteblock>
+    );
+}
+
+class effectTest extends Component{
+    state = {
+      aaa: 1
+    }
+    onClick = () => {
+      this.setState(function(s){
+        return {
+          aaa: s.aaa + 1
+        }
+      })
+    }
+    componentDidMount(){
+      console.log("app mount")
+    }
+    componentDidUpdate(){
+      console.log("app update")
+    }
+    render(){
+      return <div>{this.state.aaa < 10 ? <Example />: null}
+              <h1 onClick={this.onClick.bind(this)}>{ this.state.aaa}</h1>
+        </div>
+    }
+}
+
+const EffectVs = effectTest
   
 export default function App()  {
     const [show, setShow] = useState(false)
@@ -111,6 +175,7 @@ export default function App()  {
                 <p>innerWidth:{windowSize.innerWidth}</p>
                 <p>outerHeight:{windowSize.outerHeight}</p>
                 <p>outerWidth:{windowSize.outerWidth}</p>
+                <EffectVs />
             </div>
         </div>
     );
